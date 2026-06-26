@@ -20,10 +20,9 @@ Fix for Intune BitLocker remediation script failures caused by user privilege an
 
 The diagram below outlines how the core components of Microsoft Intune interface with Microsoft Entra ID and cloud infrastructure to manage and secure modern device endpoints:
 
+[![Microsoft Intune Architecture Diagram](https://github.com/Essie-Wabomba-dmd/Intune-BitLocker-Remediation/raw/main/intune-architecture.png)](/Essie-Wabomba-dmd/Intune-BitLocker-Remediation/blob/main/intune-architecture.png)
 
 *Image reference: Overview of cloud-native device enrollment and endpoint configuration workflows.*
-
-[![Microsoft Intune Architecture Diagram](https://github.com/Essie-Wabomba-dmd/Intune-BitLocker-Remediation/raw/main/intune-architecture.png)](/Essie-Wabomba-dmd/Intune-BitLocker-Remediation/blob/main/intune-architecture.png)
 
 ### The Role of Remediation Scripts
 
@@ -74,8 +73,9 @@ BackupToAAD-BitLockerKeyProtector -MountPoint "C:" -KeyProtectorId $KeyPair.KeyP
 ---
 
 ## 🔍 Backend Process & Permissions Context Diagram
-[![Backend Architecture Diagram](https://github.com/Essie-Wabomba-dmd/Intune-BitLocker-Remediation/raw/main/bitlocker-remediation-permissions-context.png)](/Essie-Wabomba-dmd/Intune-BitLocker-Remediation/blob/main/bitlocker-remediation-permissions-context.png)
+
 The backend architecture diagram below clarifies how Intune interacts with the Windows subsystem and why the permission context makes or breaks this specific deployment.
+[![Backend Architecture Diagram](https://github.com/Essie-Wabomba-dmd/Intune-BitLocker-Remediation/raw/main/bitlocker-remediation-permissions-context.png)](/Essie-Wabomba-dmd/Intune-BitLocker-Remediation/blob/main/bitlocker-remediation-permissions-context.png)
 
 ### 📋 Detailed Diagram Explanation
 
