@@ -4,12 +4,58 @@ Fix for Intune BitLocker remediation script failures caused by user privilege an
 
 # Microsoft Intune: Resolving BitLocker Script Remediation Failures (UAC Block)
 
+
+---
+
+## 🛠️ About Microsoft Intune
+
+[Microsoft Intune](https://www.microsoft.com/en-us/security/business/microsoft-intune) is a cloud-based unified endpoint management (UEM) service that functions as the central security and configuration engine for modern corporate fleets. It allows organizations to enforce rules, deploy applications, and manage security posture across Windows, macOS, iOS, and Android devices remotely.
+
+### Core Architecture Pillars
+
+1. **Mobile Device Management (MDM):** Complete, hardware-level control over organization-owned devices. This allows administrators to push global security configurations, monitor hardware baselines, and require full disk encryption (such as BitLocker).
+2. **Mobile Application Management (MAM):** Sandboxing and data protection at the individual application layer (e.g., securing corporate data inside Microsoft Teams or Outlook without touching a user's personal files on a BYOD device).
+3. **Identity & Conditional Access Integration:** Intune continuously feeds real-time device health and compliance telemetry back to Microsoft Entra ID. If a device drops out of compliance, access to company resources is instantly gated.
+
+
+### High-Level Service Architecture
+
+The diagram below outlines how the core components of Microsoft Intune interface with Microsoft Entra ID and cloud infrastructure to manage and secure modern device endpoints:
+
+![Microsoft Intune Architecture Diagram](intune-architecture.png)
+
+*Image reference: Overview of cloud-native device enrollment and endpoint configuration workflows.*
+
+
+### The Role of Remediation Scripts
+While Intune natively tracks compliance, environments frequently experience synchronization or policy evaluation gaps. Custom PowerShell remediation scripts allow administrators to detect and silently fix client-side discrepancies in the background. Ensuring these scripts execute under the correct permission context (such as `NT AUTHORITY\SYSTEM`) ensures that automated maintenance succeeds without requiring end-user interaction or administrative elevation.
+
+
 ## 📌 Problem Overview
 When deploying PowerShell scripts via Microsoft Intune to remediate BitLocker encryption or back up recovery keys on endpoints, deployments can encounter widespread failures. For example, initial dashboard metrics can show massive execution errors across a targeted fleet.
 
 Although endpoints have physical encryption active, the remediation script repeatedly fails to execute or fetch critical BitLocker metadata.
 
 ---
+
+
+## 💼 Real-World Case Study
+This solution was engineered to solve a specific, recurring issue observed in a production environment for client **Remember I'm a Cloud Delivery Engineer, So this is the direct client issue that I sorted**. 
+
+### The Symptom
+* **Environment:** Endpoints managed entirely via Microsoft Intune.
+* **The Issue:** Randomly throughout the day or every morning, a subset of 1 to 3 machines would flag a persistent **"Remediation Failed"** compliance error. 
+* **Target Behavior:** This issue specifically targets **random, existing devices in the fleet during routine check-ins**, rather than newly enrolled or "first-time" setups which typically pass initial deployment checks without issue.
+* **The Paradox:** IT support confirmed that BitLocker encryption was already actively enabled on the physical devices.
+
+### Previous Manual Workarounds
+Before implementing the system-context fix, support teams had to rely on temporary administrative overhead to clear the error:
+1. Manually initiating a device sync from the backend.
+2. Renaming the device inside Microsoft Intune to force policy re-evaluation.
+
+### The Automated Resolution
+Instead of relying on these manual syncs, shifting the script execution context away from user credentials to **`NT AUTHORITY\SYSTEM`** (as documented below) completely automates the process. It ensures the background agent can seamlessly escrow keys and evaluate compliance every single time without administrative intervention.
+
 
 ## 💻 Deployed PowerShell Code
 The following automated scripts are executed sequentially on the target endpoints to fetch active BitLocker key protectors and securely escalate them to Azure Active Directory (AAD):
