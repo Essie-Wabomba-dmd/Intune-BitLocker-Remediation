@@ -63,10 +63,10 @@ Instead of relying on these manual syncs, shifting the script execution context 
 The following automated scripts are executed sequentially on the target endpoints to fetch active BitLocker key protectors and securely escalate them to Azure Active Directory (AAD):
 
 ```powershell
-# Step 1: Identify and target the unique ID of the Recovery Password key protector
+# This will Identify and target the unique ID of the Recovery Password key protector
 $KeyPair = (Get-BitLockerVolume -MountPoint "C:").KeyProtector | Where-Object {$_.KeyProtectorType -eq 'RecoveryPassword'}
 
-# Step 2: Push the identified BitLocker recovery key into Entra ID / Azure AD
+# This will push the identified BitLocker recovery key into Entra ID / Azure AD
 BackupToAAD-BitLockerKeyProtector -MountPoint "C:" -KeyProtectorId $KeyPair.KeyProtectorId
 ```
 
@@ -75,6 +75,7 @@ BackupToAAD-BitLockerKeyProtector -MountPoint "C:" -KeyProtectorId $KeyPair.KeyP
 ## 🔍 Backend Process & Permissions Context Diagram
 
 The backend architecture diagram below clarifies how Intune interacts with the Windows subsystem and why the permission context makes or breaks this specific deployment.
+
 [![Backend Architecture Diagram](https://github.com/Essie-Wabomba-dmd/Intune-BitLocker-Remediation/raw/main/bitlocker-remediation-permissions-context.png)](/Essie-Wabomba-dmd/Intune-BitLocker-Remediation/blob/main/bitlocker-remediation-permissions-context.png)
 
 ### 📋 Detailed Diagram Explanation
