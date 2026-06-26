@@ -75,7 +75,6 @@ BackupToAAD-BitLockerKeyProtector -MountPoint "C:" -KeyProtectorId $KeyPair.KeyP
 ## 🔍 Backend Process & Permissions Context Diagram
 
 The backend architecture diagram below clarifies how Intune interacts with the Windows subsystem and why the permission context makes or breaks this specific deployment.
-
 [![Backend Architecture Diagram](https://github.com/Essie-Wabomba-dmd/Intune-BitLocker-Remediation/raw/main/bitlocker-remediation-permissions-context.png)](/Essie-Wabomba-dmd/Intune-BitLocker-Remediation/blob/main/bitlocker-remediation-permissions-context.png)
 
 ### 📋 Detailed Diagram Explanation
